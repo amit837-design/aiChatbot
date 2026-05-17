@@ -1,0 +1,295 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+.blob1 {
+  width: 500px;
+  height: 500px;
+  top: -180px;
+  left: -100px;
+  background: radial-gradient(
+    circle,
+    rgba(74, 222, 128, 0.04) 0%,
+    transparent 70%
+  );
+}
+.blob2 {
+  width: 400px;
+  height: 400px;
+  bottom: -120px;
+  right: -80px;
+  background: radial-gradient(
+    circle,
+    rgba(74, 222, 128, 0.03) 0%,
+    transparent 70%
+  );
+}
+
+.card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+    0 32px 64px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(74, 222, 128, 0.03);
+  animation: cardIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cardSheen {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 160px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cardBody {
+  position: relative;
+  z-index: 1;
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.brand {
+  margin-bottom: 20px;
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.subheading {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 28px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.field input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+.field input:focus {
+  border-color: var(--border-focus);
+  background: var(--bg-input-focus);
+  box-shadow: 0 0 0 3px var(--green-glow-sm);
+}
+
+.field input::placeholder {
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+
+.forgot {
+  align-self: flex-end;
+  margin-top: 6px;
+  background: none;
+  border: none;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.forgot:hover {
+  color: var(--green-text);
+}
+
+.error {
+  font-size: 12.5px;
+  color: var(--red-soft);
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  line-height: 1.4;
+}
+
+.btnPrimary {
+  width: 100%;
+  background: var(--green-primary);
+  color: #071209;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 0.15s,
+    transform 0.1s,
+    box-shadow 0.15s;
+  margin-top: 4px;
+  box-shadow: 0 4px 16px rgba(74, 222, 128, 0.18);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  opacity: 0.88;
+  box-shadow: 0 6px 20px rgba(74, 222, 128, 0.25);
+}
+
+.btnPrimary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(7, 18, 9, 0.25);
+  border-top-color: #071209;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider span {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.btnSecondary {
+  width: 100%;
+  background: var(--bg-btn-sec);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 11px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  line-height: 1.4;
+}
+
+.btnSecondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-green);
+  color: var(--text-primary);
+}
+
+.btnSecondary strong {
+  color: var(--green-text);
+  font-weight: 600;
+}
+
+.brandIcon {
+  animation: spinSlow 12s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
