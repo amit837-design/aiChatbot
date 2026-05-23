@@ -32,14 +32,27 @@ export default function ChatPage() {
 
     (async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        const token = localStorage.getItem("token");
+        console.log("TOKEN IN CHAT PAGE:", token);
+
+        if (!token) {
+          console.log("NO TOKEN FOUND — redirecting");
+          router.push("/signup_login");
+          return;
+        }
+
         const res = await getChats();
+        console.log("GETCHATS SUCCESS:", res.data);
+
         if (isMounted) {
           setChats(res.data.chats ?? []);
           setIsAuthenticated(true);
         }
       } catch (err) {
         console.log("GETCHATS ERROR:", err.response?.status, err.response?.data);
-        router.push("/signup_login");
+        if (isMounted) router.push("/signup_login");
       } finally {
         if (isMounted) setLoadingChats(false);
       }
@@ -63,16 +76,17 @@ export default function ChatPage() {
 
     socket.on("connect_error", (err) => {
       console.log("SOCKET CONNECT ERROR:", err.message);
-      router.push("/signup_login");
     });
 
     socket.on("ai-response", (chunk) => {
+      console.log("AI CHUNK:", chunk);
       streamBufferRef.current += chunk;
       displayRef.current += chunk;
       setStreamingText(displayRef.current);
     });
 
     socket.on("ai-response-end", () => {
+      console.log("AI RESPONSE END");
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
       const fullText = streamBufferRef.current;
       streamBufferRef.current = "";
