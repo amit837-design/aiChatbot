@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-const cookie = require("cookie");
 const userModel = require("../models/user.model");
 const chatModel = require("../models/chat.model");
 const jwt = require("jsonwebtoken");
@@ -17,11 +16,17 @@ function initSocketServer(httpServer) {
 
   io.use(async (socket, next) => {
     try {
-      const cookies = cookie.parse(socket.handshake.headers.cookie || "");
-      if (!cookies.token) {
+      console.log("HANDSHAKE AUTH:", JSON.stringify(socket.handshake.auth));
+      console.log("HANDSHAKE QUERY:", JSON.stringify(socket.handshake.query));
+      console.log("HANDSHAKE HEADERS:", JSON.stringify(socket.handshake.headers));
+
+      const token = socket.handshake.auth?.token;
+      console.log("EXTRACTED TOKEN:", token);
+
+      if (!token) {
         return next(new Error("Authentication error: No token provided"));
       }
-      const decoded = jwt.verify(cookies.token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await userModel.findById(decoded.id);
       if (!user) {
         return next(new Error("User not found"));
@@ -29,6 +34,7 @@ function initSocketServer(httpServer) {
       socket.user = user;
       next();
     } catch (err) {
+      console.log("SOCKET AUTH ERROR:", err.message);
       next(new Error("Authentication error: Invalid token"));
     }
   });
