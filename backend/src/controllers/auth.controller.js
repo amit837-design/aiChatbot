@@ -2,15 +2,6 @@ const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const isProduction = process.env.NODE_ENV === "production";
-
-const COOKIE_OPTIONS = {
-  httpOnly: true,
-  secure: isProduction,
-  sameSite: isProduction ? "none" : "lax",
-  maxAge: 60 * 60 * 1000,
-};
-
 async function register(req, res) {
   try {
     const {
@@ -35,8 +26,6 @@ async function register(req, res) {
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-
-    res.cookie("token", token, COOKIE_OPTIONS);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -69,13 +58,12 @@ async function login(req, res) {
       expiresIn: "1h",
     });
 
-    res.cookie("token", token, COOKIE_OPTIONS);
-
     res.status(200).json({
       message: "User logged in successfully",
       fullName: user.fullName,
       email: user.email,
       id: user._id,
+      token,
     });
   } catch (error) {
     console.error("Login failed", error);

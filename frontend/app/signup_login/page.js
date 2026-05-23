@@ -59,13 +59,15 @@ export default function AuthPage() {
     setLoading(true);
     try {
       if (mode === "login") {
-        await login({ email: form.email, password: form.password });
+        const res = await login({ email: form.email, password: form.password });
+        localStorage.setItem("token", res.data.token);
       } else {
-        await register({
+        const res = await register({
           fullName: { firstName: form.firstName, lastName: form.lastName },
           email: form.email,
           password: form.password,
         });
+        localStorage.setItem("token", res.data.token);
       }
       router.push("/chat");
     } catch (err) {
